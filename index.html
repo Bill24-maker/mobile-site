@@ -6,21 +6,7 @@
 <title>食品科學 × AI｜東海大學食品科學系 — 東海配色版</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<script>
-// 手機偵測 → 自動導向（含 try/catch 防止頁面崩潰）
-try {
-  (function(){
-    var ua = (navigator.userAgent || navigator.vendor || window.opera || '').toLowerCase();
-    var isMobile = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/.test(ua);
-    var isSmall = (window.innerWidth || screen.width) <= 820;
-    if (isMobile || isSmall) {
-      window.location.replace('https://bill24-maker.github.io/mobile-site/');
-    }
-  })();
-} catch(e) {
-  // 導向失敗時靜默略過，繼續顯示桌機版頁面
-}
-</script>
+<!-- mobile redirect removed for GitHub Pages hosting -->
 <style>
 :root {
   --bg: #0d1f35;
@@ -41,7 +27,10 @@ body {
   background: var(--bg);
   color: var(--white);
   overflow-x: hidden;
-  cursor: none;
+}
+/* ── MOBILE: hide desktop cursor ── */
+@media (max-width: 1024px) {
+  .cursor, .cursor-ring { display: none !important; }
 }
 /* ── CURSOR ── */
 .cursor {
@@ -1222,10 +1211,6 @@ const terminalLines = [
   { type:'out', text:'Running generative AI formulation engine...' },
   { type:'success', text:'✓ 配方生成完畢 → sodium reduction: -42% | umami score: 9.2/10' },
   { type:'out', text:'LCA analysis: carbon footprint ↓ 18% vs baseline' },
-  { type:'cmd', text:'$ export --format SCI_journal --target "Food Chemistry Q1"' },
-  { type:'success', text:'✓ Paper draft ready. Submit to Elsevier? [Y/n]: Y' },
-  { type:'out-zh', text:'✓ 論文草稿已生成，正在上傳至 Elsevier 投稿系統...' },
-  { type:'dim', text:'Manuscript ID: FOODCHEM-2025-XXXX | Status: Under Review' },
   { type:'cmd', text:'$ _' },
 ];
 
