@@ -8,499 +8,124 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #020a0f;
-  --teal: #00e5c8;
-  --cyan: #00b8d4;
-  --green: #00e676;
-  --gold: #ffd600;
-  --white: #f0faff;
-  --muted: #5a7a88;
-  --card-bg: rgba(0,229,200,0.04);
-  --card-border: rgba(0,229,200,0.15);
+  --bg: #020a0f; --teal: #00e5c8; --cyan: #00b8d4; --green: #00e676;
+  --gold: #ffd600; --white: #f0faff; --muted: #5a7a88;
+  --card-bg: rgba(0,229,200,0.04); --card-border: rgba(0,229,200,0.15);
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
-
 body {
-  font-family: 'Noto Sans TC', sans-serif;
-  background: var(--bg);
-  color: var(--white);
-  overflow-x: hidden;
-  cursor: none;
+  font-family: 'Noto Sans TC', sans-serif; background: var(--bg);
+  color: var(--white); overflow-x: hidden; cursor: none;
 }
-
-/* ── CUSTOM CURSOR ── */
 .cursor {
   position: fixed; width: 12px; height: 12px;
   background: var(--teal); border-radius: 50%;
-  pointer-events: none; z-index: 9999;
-  transform: translate(-50%,-50%);
+  pointer-events: none; z-index: 9999; transform: translate(-50%,-50%);
   transition: transform .1s, width .2s, height .2s, background .2s;
   mix-blend-mode: screen;
 }
 .cursor-ring {
   position: fixed; width: 36px; height: 36px;
   border: 1.5px solid rgba(0,229,200,.5); border-radius: 50%;
-  pointer-events: none; z-index: 9998;
-  transform: translate(-50%,-50%);
+  pointer-events: none; z-index: 9998; transform: translate(-50%,-50%);
   transition: transform .12s ease-out, width .25s, height .25s;
 }
 body:hover .cursor { opacity: 1; }
-
-/* ── CANVAS BACKGROUND ── */
-#neural-canvas {
-  position: fixed; top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 0; opacity: .45;
-}
-
-/* ── NOISE OVERLAY ── */
+#neural-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: .45; }
 body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 1;
+  content: ''; position: fixed; inset: 0; z-index: 1;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
   pointer-events: none; opacity: .6;
 }
-
-/* ── MAIN CONTENT ── */
 main { position: relative; z-index: 2; }
-
-/* ── HERO ── */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 60px 24px;
-  position: relative;
-}
-
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  border: 1px solid var(--card-border);
-  background: var(--card-bg);
-  border-radius: 100px; padding: 6px 18px;
-  font-family: 'Space Mono', monospace;
-  font-size: 11px; letter-spacing: 2px;
-  color: var(--teal); text-transform: uppercase;
-  margin-bottom: 32px;
-  animation: fadeUp .8s ease both;
-}
-.hero-badge::before {
-  content: ''; width: 6px; height: 6px;
-  background: var(--green); border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(0,230,118,.6); }
-  50% { box-shadow: 0 0 0 6px rgba(0,230,118,0); }
-}
-
-.hero-title {
-  font-size: clamp(42px, 9vw, 96px);
-  font-weight: 900; line-height: 1.05;
-  letter-spacing: -2px;
-  margin-bottom: 24px;
-  animation: fadeUp .8s .1s ease both;
-}
-
+.hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 24px; position: relative; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--card-border); background: var(--card-bg); border-radius: 100px; padding: 6px 18px; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--teal); text-transform: uppercase; margin-bottom: 32px; animation: fadeUp .8s ease both; }
+.hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(0,230,118,.6); } 50% { box-shadow: 0 0 0 6px rgba(0,230,118,0); } }
+.hero-title { font-size: clamp(42px, 9vw, 96px); font-weight: 900; line-height: 1.05; letter-spacing: -2px; margin-bottom: 24px; animation: fadeUp .8s .1s ease both; }
 .hero-title .line1 { display: block; color: var(--white); }
-.hero-title .symbol {
-  display: inline-block; color: var(--teal);
-  font-family: 'Space Mono', monospace;
-  animation: glitch 4s infinite;
-  margin: 0 8px;
-}
+.hero-title .symbol { display: inline-block; color: var(--teal); font-family: 'Space Mono', monospace; animation: glitch 4s infinite; margin: 0 8px; }
 .hero-title .line2 { display: block; color: var(--teal); }
-
-@keyframes glitch {
-  0%,90%,100% { text-shadow: none; transform: none; }
-  91% { text-shadow: -3px 0 #ff0055, 3px 0 #00e5c8; transform: translateX(-2px); }
-  93% { text-shadow: 3px 0 #ff0055, -3px 0 #00e5c8; transform: translateX(2px); }
-  95% { text-shadow: none; transform: none; }
-  97% { text-shadow: -2px 0 #ffd600; transform: skewX(-2deg); }
-  99% { text-shadow: none; transform: none; }
-}
-
-.hero-sub {
-  font-size: clamp(15px, 2.2vw, 20px);
-  color: rgba(240,250,255,.6); max-width: 600px;
-  line-height: 1.8; margin-bottom: 48px;
-  font-weight: 300;
-  animation: fadeUp .8s .2s ease both;
-}
-
+@keyframes glitch { 0%,90%,100% { text-shadow: none; transform: none; } 91% { text-shadow: -3px 0 #ff0055, 3px 0 #00e5c8; transform: translateX(-2px); } 93% { text-shadow: 3px 0 #ff0055, -3px 0 #00e5c8; transform: translateX(2px); } 95% { text-shadow: none; transform: none; } 97% { text-shadow: -2px 0 #ffd600; transform: skewX(-2deg); } 99% { text-shadow: none; transform: none; } }
+.hero-sub { font-size: clamp(15px, 2.2vw, 20px); color: rgba(240,250,255,.6); max-width: 600px; line-height: 1.8; margin-bottom: 48px; font-weight: 300; animation: fadeUp .8s .2s ease both; }
 .hero-sub em { color: var(--teal); font-style: normal; font-weight: 500; }
-
-.hero-cta {
-  display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
-  animation: fadeUp .8s .3s ease both;
-}
-
-.btn-primary {
-  padding: 14px 32px; border-radius: 4px;
-  background: var(--teal); color: var(--bg);
-  font-family: 'Noto Sans TC', sans-serif;
-  font-weight: 700; font-size: 15px;
-  text-decoration: none; border: none; cursor: none;
-  transition: transform .2s, box-shadow .2s;
-  box-shadow: 0 0 32px rgba(0,229,200,.3);
-  letter-spacing: .5px;
-}
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 48px rgba(0,229,200,.5);
-}
-
-.btn-secondary {
-  padding: 14px 32px; border-radius: 4px;
-  background: transparent; color: var(--teal);
-  font-family: 'Noto Sans TC', sans-serif;
-  font-weight: 500; font-size: 15px;
-  text-decoration: none; cursor: none;
-  border: 1px solid rgba(0,229,200,.4);
-  transition: border-color .2s, background .2s;
-  letter-spacing: .5px;
-}
-.btn-secondary:hover {
-  border-color: var(--teal);
-  background: rgba(0,229,200,.06);
-}
-
-.scroll-hint {
-  position: absolute; bottom: 32px;
-  left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center;
-  gap: 8px; color: var(--muted); font-size: 11px;
-  letter-spacing: 2px; text-transform: uppercase;
-  animation: fadeIn 1s 1s both;
-}
-.scroll-line {
-  width: 1px; height: 48px;
-  background: linear-gradient(to bottom, var(--teal), transparent);
-  animation: scrollDown 2s infinite;
-}
-@keyframes scrollDown {
-  0% { transform: scaleY(0); transform-origin: top; }
-  50% { transform: scaleY(1); transform-origin: top; }
-  51% { transform-origin: bottom; }
-  100% { transform: scaleY(0); transform-origin: bottom; }
-}
-
-/* ── STATS STRIP ── */
-.stats-strip {
-  border-top: 1px solid var(--card-border);
-  border-bottom: 1px solid var(--card-border);
-  background: rgba(0,229,200,.02);
-  padding: 32px 24px;
-  display: flex; justify-content: center;
-  gap: 0;
-}
-.stat-item {
-  flex: 1; max-width: 200px;
-  text-align: center; padding: 0 24px;
-  border-right: 1px solid var(--card-border);
-}
+.hero-cta { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; animation: fadeUp .8s .3s ease both; }
+.btn-primary { padding: 14px 32px; border-radius: 4px; background: var(--teal); color: var(--bg); font-family: 'Noto Sans TC', sans-serif; font-weight: 700; font-size: 15px; text-decoration: none; border: none; cursor: none; transition: transform .2s, box-shadow .2s; box-shadow: 0 0 32px rgba(0,229,200,.3); letter-spacing: .5px; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 48px rgba(0,229,200,.5); }
+.btn-secondary { padding: 14px 32px; border-radius: 4px; background: transparent; color: var(--teal); font-family: 'Noto Sans TC', sans-serif; font-weight: 500; font-size: 15px; text-decoration: none; cursor: none; border: 1px solid rgba(0,229,200,.4); transition: border-color .2s, background .2s; letter-spacing: .5px; }
+.btn-secondary:hover { border-color: var(--teal); background: rgba(0,229,200,.06); }
+.scroll-hint { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; animation: fadeIn 1s 1s both; }
+.scroll-line { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--teal), transparent); animation: scrollDown 2s infinite; }
+@keyframes scrollDown { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+.stats-strip { border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); background: rgba(0,229,200,.02); padding: 32px 24px; display: flex; justify-content: center; gap: 0; }
+.stat-item { flex: 1; max-width: 200px; text-align: center; padding: 0 24px; border-right: 1px solid var(--card-border); }
 .stat-item:last-child { border-right: none; }
-.stat-num {
-  font-family: 'Space Mono', monospace;
-  font-size: clamp(28px, 4vw, 44px);
-  font-weight: 700; color: var(--teal);
-  line-height: 1;
-  display: block;
-}
-.stat-label {
-  font-size: 12px; color: var(--muted);
-  margin-top: 6px; line-height: 1.5;
-  letter-spacing: .5px;
-}
-
-/* ── SECTION ── */
-.section {
-  max-width: 1100px; margin: 0 auto;
-  padding: 100px 24px;
-}
-
-.section-tag {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px; letter-spacing: 3px;
-  color: var(--teal); text-transform: uppercase;
-  margin-bottom: 16px; display: block;
-}
-
-.section-title {
-  font-size: clamp(28px, 4.5vw, 52px);
-  font-weight: 900; line-height: 1.1;
-  letter-spacing: -1px; margin-bottom: 20px;
-}
-
-.section-desc {
-  font-size: 16px; color: rgba(240,250,255,.55);
-  max-width: 520px; line-height: 1.8;
-  font-weight: 300;
-}
-
-/* ── AI DOMAINS GRID ── */
-.domains-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1px;
-  background: var(--card-border);
-  border: 1px solid var(--card-border);
-  border-radius: 12px; overflow: hidden;
-  margin-top: 60px;
-}
-
-.domain-card {
-  background: var(--bg);
-  padding: 36px 32px;
-  position: relative; overflow: hidden;
-  transition: background .3s;
-}
-.domain-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0;
-  width: 3px; height: 100%;
-  background: var(--teal); opacity: 0;
-  transition: opacity .3s;
-}
-.domain-card:hover {
-  background: rgba(0,229,200,.04);
-}
+.stat-num { font-family: 'Space Mono', monospace; font-size: clamp(28px, 4vw, 44px); font-weight: 700; color: var(--teal); line-height: 1; display: block; }
+.stat-label { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; letter-spacing: .5px; }
+.section { max-width: 1100px; margin: 0 auto; padding: 100px 24px; }
+.section-tag { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--teal); text-transform: uppercase; margin-bottom: 16px; display: block; }
+.section-title { font-size: clamp(28px, 4.5vw, 52px); font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
+.section-desc { font-size: 16px; color: rgba(240,250,255,.55); max-width: 520px; line-height: 1.8; font-weight: 300; }
+.domains-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1px; background: var(--card-border); border: 1px solid var(--card-border); border-radius: 12px; overflow: hidden; margin-top: 60px; }
+.domain-card { background: var(--bg); padding: 36px 32px; position: relative; overflow: hidden; transition: background .3s; }
+.domain-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--teal); opacity: 0; transition: opacity .3s; }
+.domain-card:hover { background: rgba(0,229,200,.04); }
 .domain-card:hover::before { opacity: 1; }
-
-.domain-icon {
-  font-size: 36px; margin-bottom: 20px;
-  display: block;
-  filter: drop-shadow(0 0 12px rgba(0,229,200,.4));
-}
-
-.domain-num {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px; color: var(--muted);
-  letter-spacing: 2px; margin-bottom: 10px;
-  display: block;
-}
-
-.domain-title {
-  font-size: 20px; font-weight: 700;
-  margin-bottom: 10px; color: var(--white);
-}
-
+.domain-icon { font-size: 36px; margin-bottom: 20px; display: block; filter: drop-shadow(0 0 12px rgba(0,229,200,.4)); }
+.domain-num { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 2px; margin-bottom: 10px; display: block; }
+.domain-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: var(--white); }
 .domain-title span { color: var(--teal); }
-
-.domain-desc {
-  font-size: 14px; color: rgba(240,250,255,.5);
-  line-height: 1.8; font-weight: 300;
-}
-
-.domain-tag {
-  display: inline-block; margin-top: 16px;
-  padding: 4px 10px; border-radius: 4px;
-  background: rgba(0,229,200,.08);
-  border: 1px solid rgba(0,229,200,.2);
-  font-size: 11px; color: var(--teal);
-  font-family: 'Space Mono', monospace;
-  letter-spacing: 1px;
-}
-
-/* ── TIMELINE ── */
-.timeline {
-  margin-top: 80px; position: relative;
-  padding-left: 32px;
-}
-.timeline::before {
-  content: '';
-  position: absolute; left: 0; top: 8px; bottom: 0;
-  width: 1px;
-  background: linear-gradient(to bottom, var(--teal), transparent);
-}
-
-.tl-item {
-  margin-bottom: 48px; position: relative;
-  opacity: 0; transform: translateX(-20px);
-  transition: opacity .6s, transform .6s;
-}
+.domain-desc { font-size: 14px; color: rgba(240,250,255,.5); line-height: 1.8; font-weight: 300; }
+.domain-tag { display: inline-block; margin-top: 16px; padding: 4px 10px; border-radius: 4px; background: rgba(0,229,200,.08); border: 1px solid rgba(0,229,200,.2); font-size: 11px; color: var(--teal); font-family: 'Space Mono', monospace; letter-spacing: 1px; }
+.timeline { margin-top: 80px; position: relative; padding-left: 32px; }
+.timeline::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 0; width: 1px; background: linear-gradient(to bottom, var(--teal), transparent); }
+.tl-item { margin-bottom: 48px; position: relative; opacity: 0; transform: translateX(-20px); transition: opacity .6s, transform .6s; }
 .tl-item.visible { opacity: 1; transform: none; }
-
-.tl-dot {
-  position: absolute; left: -36px; top: 6px;
-  width: 10px; height: 10px;
-  background: var(--teal); border-radius: 50%;
-  box-shadow: 0 0 12px rgba(0,229,200,.6);
-}
-
-.tl-year {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px; color: var(--teal);
-  letter-spacing: 2px; margin-bottom: 8px;
-}
-
-.tl-title {
-  font-size: 18px; font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.tl-desc {
-  font-size: 14px; color: rgba(240,250,255,.5);
-  line-height: 1.8; font-weight: 300;
-}
-
-/* ── FUTURE JOBS ── */
-.jobs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px; margin-top: 60px;
-}
-
-.job-pill {
-  padding: 20px 20px;
-  border: 1px solid var(--card-border);
-  border-radius: 8px;
-  background: var(--card-bg);
-  transition: border-color .2s, transform .2s, box-shadow .2s;
-  cursor: none;
-}
-.job-pill:hover {
-  border-color: var(--teal);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(0,229,200,.1);
-}
-
+.tl-dot { position: absolute; left: -36px; top: 6px; width: 10px; height: 10px; background: var(--teal); border-radius: 50%; box-shadow: 0 0 12px rgba(0,229,200,.6); }
+.tl-year { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--teal); letter-spacing: 2px; margin-bottom: 8px; }
+.tl-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.tl-desc { font-size: 14px; color: rgba(240,250,255,.5); line-height: 1.8; font-weight: 300; }
+.jobs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 60px; }
+.job-pill { padding: 20px 20px; border: 1px solid var(--card-border); border-radius: 8px; background: var(--card-bg); transition: border-color .2s, transform .2s, box-shadow .2s; cursor: none; }
+.job-pill:hover { border-color: var(--teal); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,229,200,.1); }
 .job-emoji { font-size: 24px; margin-bottom: 10px; display: block; }
 .job-title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
 .job-sub { font-size: 12px; color: var(--muted); line-height: 1.6; }
-
-/* ── QUOTE BLOCK ── */
-.quote-block {
-  margin: 80px 0;
-  padding: 48px;
-  background: rgba(0,229,200,.04);
-  border: 1px solid rgba(0,229,200,.15);
-  border-radius: 12px;
-  position: relative; overflow: hidden;
-}
-.quote-block::before {
-  content: '"';
-  position: absolute; top: -20px; left: 32px;
-  font-size: 200px; font-weight: 900;
-  color: rgba(0,229,200,.05); line-height: 1;
-  font-family: 'Space Mono', monospace;
-  pointer-events: none;
-}
-.quote-text {
-  font-size: clamp(18px, 3vw, 28px);
-  font-weight: 700; line-height: 1.5;
-  color: var(--white); position: relative;
-}
+.quote-block { margin: 80px 0; padding: 48px; background: rgba(0,229,200,.04); border: 1px solid rgba(0,229,200,.15); border-radius: 12px; position: relative; overflow: hidden; }
+.quote-block::before { content: '"'; position: absolute; top: -20px; left: 32px; font-size: 200px; font-weight: 900; color: rgba(0,229,200,.05); line-height: 1; font-family: 'Space Mono', monospace; pointer-events: none; }
+.quote-text { font-size: clamp(18px, 3vw, 28px); font-weight: 700; line-height: 1.5; color: var(--white); position: relative; }
 .quote-text em { color: var(--teal); font-style: normal; }
-.quote-src {
-  margin-top: 20px; font-size: 13px;
-  color: var(--muted); font-family: 'Space Mono', monospace;
-  letter-spacing: 1px;
-}
-
-/* ── CTA FOOTER ── */
-.cta-section {
-  text-align: center; padding: 120px 24px;
-  position: relative;
-}
-.cta-section::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,229,200,.07), transparent);
-  pointer-events: none;
-}
-.cta-title {
-  font-size: clamp(32px, 6vw, 72px);
-  font-weight: 900; letter-spacing: -2px;
-  line-height: 1.1; margin-bottom: 24px;
-}
+.quote-src { margin-top: 20px; font-size: 13px; color: var(--muted); font-family: 'Space Mono', monospace; letter-spacing: 1px; }
+.cta-section { text-align: center; padding: 120px 24px; position: relative; }
+.cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,229,200,.07), transparent); pointer-events: none; }
+.cta-title { font-size: clamp(32px, 6vw, 72px); font-weight: 900; letter-spacing: -2px; line-height: 1.1; margin-bottom: 24px; }
 .cta-title .accent { color: var(--teal); }
-.cta-sub {
-  font-size: 16px; color: rgba(240,250,255,.5);
-  margin-bottom: 48px; font-weight: 300;
-}
-.cta-buttons {
-  display: flex; gap: 16px;
-  justify-content: center; flex-wrap: wrap;
-}
-
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0;
-  z-index: 100; padding: 20px 32px;
-  display: flex; align-items: center; justify-content: space-between;
-  background: linear-gradient(to bottom, rgba(2,10,15,.9), transparent);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0,229,200,.06);
-}
-.nav-logo {
-  font-family: 'Space Mono', monospace;
-  font-size: 13px; font-weight: 700;
-  color: var(--teal); letter-spacing: 1px;
-  text-decoration: none;
-}
+.cta-sub { font-size: 16px; color: rgba(240,250,255,.5); margin-bottom: 48px; font-weight: 300; }
+.cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(to bottom, rgba(2,10,15,.9), transparent); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,229,200,.06); }
+.nav-logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: var(--teal); letter-spacing: 1px; text-decoration: none; }
 .nav-logo span { color: var(--white); }
-.nav-link {
-  font-size: 13px; color: rgba(240,250,255,.6);
-  text-decoration: none; letter-spacing: .5px;
-  transition: color .2s;
-}
+.nav-link { font-size: 13px; color: rgba(240,250,255,.6); text-decoration: none; letter-spacing: .5px; transition: color .2s; }
 .nav-link:hover { color: var(--teal); }
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; } to { opacity: 1; }
-}
-
-.reveal {
-  opacity: 0; transform: translateY(32px);
-  transition: opacity .7s, transform .7s;
-}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity .7s, transform .7s; }
 .reveal.visible { opacity: 1; transform: none; }
-
-/* ── TERMINAL BLOCK ── */
-.terminal {
-  background: rgba(0,0,0,.6);
-  border: 1px solid rgba(0,229,200,.2);
-  border-radius: 10px; overflow: hidden;
-  margin-top: 48px;
-  font-family: 'Space Mono', monospace;
-}
-.terminal-bar {
-  background: rgba(0,229,200,.08);
-  padding: 10px 16px;
-  display: flex; align-items: center; gap: 8px;
-  border-bottom: 1px solid rgba(0,229,200,.1);
-}
+.terminal { background: rgba(0,0,0,.6); border: 1px solid rgba(0,229,200,.2); border-radius: 10px; overflow: hidden; margin-top: 48px; font-family: 'Space Mono', monospace; }
+.terminal-bar { background: rgba(0,229,200,.08); padding: 10px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(0,229,200,.1); }
 .t-dot { width: 10px; height: 10px; border-radius: 50%; }
 .t-dot.r { background: #ff5f57; }
 .t-dot.y { background: #ffbd2e; }
 .t-dot.g { background: #28ca41; }
-.terminal-title {
-  font-size: 11px; color: var(--muted);
-  margin-left: 8px; letter-spacing: 1px;
-}
+.terminal-title { font-size: 11px; color: var(--muted); margin-left: 8px; letter-spacing: 1px; }
 .terminal-body { padding: 24px; font-size: 13px; line-height: 2; }
 .t-prompt { color: var(--teal); }
 .t-cmd { color: var(--white); }
 .t-out { color: rgba(240,250,255,.45); padding-left: 20px; }
 .t-out.hi { color: var(--green); }
-.t-cursor {
-  display: inline-block; width: 8px; height: 14px;
-  background: var(--teal); vertical-align: middle;
-  animation: blink 1s infinite;
-}
+.t-cursor { display: inline-block; width: 8px; height: 14px; background: var(--teal); vertical-align: middle; animation: blink 1s infinite; }
 @keyframes blink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
-
-/* ── RESPONSIVE ── */
 @media (max-width: 640px) {
   .stats-strip { flex-wrap: wrap; gap: 16px; }
   .stat-item { border-right: none; border-bottom: 1px solid var(--card-border); }
@@ -514,127 +139,51 @@ nav {
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursor-ring"></div>
-
 <canvas id="neural-canvas"></canvas>
 
 <nav>
-  <a href="https://foodsci.thu.edu.tw" class="nav-logo">FOOD<span>SCI</span> × AI</a>
-  <a href="https://foodsci.thu.edu.tw" class="nav-link">← 回系網首頁</a>
+  <a href="https://foodsci.thu.edu.tw/?desktop=true" class="nav-logo">FOOD<span>SCI</span> × AI</a>
+  <a href="https://foodsci.thu.edu.tw/?desktop=true" class="nav-link">← 回系網首頁</a>
 </nav>
 
 <main>
-
-<!-- ── HERO ── -->
 <section class="hero">
   <div class="hero-badge">東海大學 食品科學系 ✦ 2025</div>
   <h1 class="hero-title">
-    <span class="line1">食品科學</span>
-    <span class="symbol">×</span>
-    <span class="line2">人工智慧</span>
+    <span class="line1">食品科學</span><span class="symbol">×</span><span class="line2">人工智慧</span>
   </h1>
-  <p class="hero-sub">
-    你以為食品只是廚房裡的事？<br>
-    在這裡，<em>AI 感測器</em>偵測食安，<em>機器學習</em>設計配方，<em>精準發酵</em>重新定義農業。<br>
-    這是一個食品科學家與 AI 工程師共同解決人類未來問題的時代。
-  </p>
+  <p class="hero-sub">你以為食品只是廚房裡的事？<br>在這裡，<em>AI 感測器</em>偵測食安，<em>機器學習</em>設計配方，<em>精準發酵</em>重新定義農業。<br>這是一個食品科學家與 AI 工程師共同解決人類未來問題的時代。</p>
   <div class="hero-cta">
-    <a href="https://foodsci.thu.edu.tw/web/page/page.php?lang=zh_tw&scid=37&sid=51" class="btn-primary">探索智慧科技課程</a>
-    <a href="https://foodsci.thu.edu.tw/web/news/list.php?cid=5" class="btn-secondary">看最新研究成果</a>
+    <a href="https://foodsci.thu.edu.tw/web/page/page.php?lang=zh_tw&scid=37&sid=51&desktop=true" class="btn-primary">探索智慧科技課程</a>
+    <a href="https://foodsci.thu.edu.tw/web/news/list.php?cid=5&desktop=true" class="btn-secondary">看最新研究成果</a>
   </div>
-  <div class="scroll-hint">
-    <span>往下探索</span>
-    <div class="scroll-line"></div>
-  </div>
+  <div class="scroll-hint"><span>往下探索</span><div class="scroll-line"></div></div>
 </section>
 
-<!-- ── STATS ── -->
 <div class="stats-strip">
-  <div class="stat-item">
-    <span class="stat-num" data-target="40">0</span>
-    <div class="stat-label">系所成立年數<br>食科領域深厚積累</div>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-target="3">0</span>
-    <div class="stat-label">核心領域整合<br>食品科技 × 食安 × 管理</div>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-prefix="Q">1</span>
-    <div class="stat-label">SCI 期刊發表等級<br>國際研究能量</div>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-target="100" data-suffix="%+">0</span>
-    <div class="stat-label">就業率<br>畢業生職涯出路</div>
-  </div>
+  <div class="stat-item"><span class="stat-num" data-target="40">0</span><div class="stat-label">系所成立年數<br>食科領域深厚積累</div></div>
+  <div class="stat-item"><span class="stat-num" data-target="3">0</span><div class="stat-label">核心領域整合<br>食品科技 × 食安 × 管理</div></div>
+  <div class="stat-item"><span class="stat-num" data-prefix="Q">1</span><div class="stat-label">SCI 期刊發表等級<br>國際研究能量</div></div>
+  <div class="stat-item"><span class="stat-num" data-target="100" data-suffix="%+">0</span><div class="stat-label">就業率<br>畢業生職涯出路</div></div>
 </div>
 
-<!-- ── AI DOMAINS ── -->
 <section class="section">
   <span class="section-tag reveal">// AI Applications</span>
   <h2 class="section-title reveal">食品 × AI<br>六大應用場景</h2>
   <p class="section-desc reveal">這不是遙遠的未來，這是你在東海食科系四年中，會真正接觸到的研究與實務方向。</p>
-
   <div class="domains-grid reveal">
-
-    <div class="domain-card">
-      <span class="domain-icon">🧬</span>
-      <span class="domain-num">01 ──</span>
-      <h3 class="domain-title">精準<span>發酵</span>技術</h3>
-      <p class="domain-desc">導入 AI 監控微生物菌相，讓咖啡、酒類、醬油的發酵過程從「靠經驗猜測」變成「數據驅動的科學」。東海食科系原地起啡團隊已獲教育部金獎肯定。</p>
-      <span class="domain-tag">BIOINFORMATICS</span>
-    </div>
-
-    <div class="domain-card">
-      <span class="domain-icon">🔬</span>
-      <span class="domain-num">02 ──</span>
-      <h3 class="domain-title">AI <span>食安</span>檢測</h3>
-      <p class="domain-desc">結合光譜分析與機器學習，快速辨識食品中的農藥殘留、重金屬、摻偽成分，比傳統化學分析快上數十倍，正在改寫台灣食安稽查流程。</p>
-      <span class="domain-tag">MACHINE LEARNING</span>
-    </div>
-
-    <div class="domain-card">
-      <span class="domain-icon">🏭</span>
-      <span class="domain-num">03 ──</span>
-      <h3 class="domain-title">智慧<span>產線</span>管理</h3>
-      <p class="domain-desc">Kewpie、統一、台糖等企業已大量導入 AI 視覺檢測與自動化產線。你在課程中親赴日本企業參訪，見證 AI 如何做到零廢棄、碳中和。</p>
-      <span class="domain-tag">INDUSTRY 4.0</span>
-    </div>
-
-    <div class="domain-card">
-      <span class="domain-icon">🧠</span>
-      <span class="domain-num">04 ──</span>
-      <h3 class="domain-title">精準<span>營養</span>科學</h3>
-      <p class="domain-desc">結合基因組學與 AI 分析，為每個人量身設計最適合的飲食策略。這是健康食品產業的下一個兆元市場，也是東海食科系「智慧科技與精準營養」課程的核心。</p>
-      <span class="domain-tag">NUTRIGENOMICS</span>
-    </div>
-
-    <div class="domain-card">
-      <span class="domain-icon">🌱</span>
-      <span class="domain-num">05 ──</span>
-      <h3 class="domain-title">永續<span>農業</span>科技</h3>
-      <p class="domain-desc">感測器 + IoT + AI 三位一體，即時監測農場土壤、氣候、作物狀態，精準預測最佳採收時機，大幅降低食物浪費，正是東海食科系與日本鳥取大學合作研究的方向。</p>
-      <span class="domain-tag">SMART AGRICULTURE</span>
-    </div>
-
-    <div class="domain-card">
-      <span class="domain-icon">🍽️</span>
-      <span class="domain-num">06 ──</span>
-      <h3 class="domain-title">AI <span>配方</span>設計</h3>
-      <p class="domain-desc">輸入消費者偏好、法規限制、成本上限，AI 自動生成最佳食品配方。這不是取代食品科學家，而是讓你的創意有更強大的工具放大。</p>
-      <span class="domain-tag">GENERATIVE AI</span>
-    </div>
-
+    <div class="domain-card"><span class="domain-icon">🧬</span><span class="domain-num">01 ──</span><h3 class="domain-title">精準<span>發酵</span>技術</h3><p class="domain-desc">導入 AI 監控微生物菌相，讓咖啡、酒類、醬油的發酵過程從「靠經驗猜測」變成「數據驅動的科學」。東海食科系原地起啡團隊已獲教育部金獎肯定。</p><span class="domain-tag">BIOINFORMATICS</span></div>
+    <div class="domain-card"><span class="domain-icon">🔬</span><span class="domain-num">02 ──</span><h3 class="domain-title">AI <span>食安</span>檢測</h3><p class="domain-desc">結合光譜分析與機器學習，快速辨識食品中的農藥殘留、重金屬、摻偽成分，比傳統化學分析快上數十倍，正在改寫台灣食安稽查流程。</p><span class="domain-tag">MACHINE LEARNING</span></div>
+    <div class="domain-card"><span class="domain-icon">🏭</span><span class="domain-num">03 ──</span><h3 class="domain-title">智慧<span>產線</span>管理</h3><p class="domain-desc">Kewpie、統一、台糖等企業已大量導入 AI 視覺檢測與自動化產線。你在課程中親赴日本企業參訪，見證 AI 如何做到零廢棄、碳中和。</p><span class="domain-tag">INDUSTRY 4.0</span></div>
+    <div class="domain-card"><span class="domain-icon">🧠</span><span class="domain-num">04 ──</span><h3 class="domain-title">精準<span>營養</span>科學</h3><p class="domain-desc">結合基因組學與 AI 分析，為每個人量身設計最適合的飲食策略。這是健康食品產業的下一個兆元市場，也是東海食科系「智慧科技與精準營養」課程的核心。</p><span class="domain-tag">NUTRIGENOMICS</span></div>
+    <div class="domain-card"><span class="domain-icon">🌱</span><span class="domain-num">05 ──</span><h3 class="domain-title">永續<span>農業</span>科技</h3><p class="domain-desc">感測器 + IoT + AI 三位一體，即時監測農場土壤、氣候、作物狀態，精準預測最佳採收時機，大幅降低食物浪費，正是東海食科系與日本鳥取大學合作研究的方向。</p><span class="domain-tag">SMART AGRICULTURE</span></div>
+    <div class="domain-card"><span class="domain-icon">🍽️</span><span class="domain-num">06 ──</span><h3 class="domain-title">AI <span>配方</span>設計</h3><p class="domain-desc">輸入消費者偏好、法規限制、成本上限，AI 自動生成最佳食品配方。這不是取代食品科學家，而是讓你的創意有更強大的工具放大。</p><span class="domain-tag">GENERATIVE AI</span></div>
   </div>
 </section>
 
-<!-- ── TERMINAL ── -->
 <section class="section" style="padding-top:0;">
   <div class="terminal reveal">
-    <div class="terminal-bar">
-      <div class="t-dot r"></div>
-      <div class="t-dot y"></div>
-      <div class="t-dot g"></div>
-      <span class="terminal-title">foodsci-ai-research.py — 東海大學食品科學系</span>
-    </div>
+    <div class="terminal-bar"><div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div><span class="terminal-title">foodsci-ai-research.py — 東海大學食品科學系</span></div>
     <div class="terminal-body">
       <div><span class="t-prompt">$ </span><span class="t-cmd">python analyze_fermentation.py --model precision_yeast_v3</span></div>
       <div class="t-out">Loading microbial dataset... 12,847 samples</div>
@@ -648,248 +197,94 @@ nav {
   </div>
 </section>
 
-<!-- ── FUTURE JOBS ── -->
 <section class="section">
   <span class="section-tag reveal">// Career Paths</span>
   <h2 class="section-title reveal">畢業後<br>你可以成為</h2>
-  <p class="section-desc reveal">食品 × AI 交叉領域的人才，正是台灣產業最缺的那一塊。</p>
-
   <div class="jobs-grid reveal">
-    <div class="job-pill">
-      <span class="job-emoji">🔬</span>
-      <div class="job-title">食品 AI 研發工程師</div>
-      <div class="job-sub">統一、味全、義美等大廠的研發部門</div>
-    </div>
-    <div class="job-pill">
-      <span class="job-emoji">🛡️</span>
-      <div class="job-title">智慧食安稽查員</div>
-      <div class="job-sub">衛福部、食藥署、縣市衛生局</div>
-    </div>
-    <div class="job-pill">
-      <span class="job-emoji">🌿</span>
-      <div class="job-title">精準農業顧問</div>
-      <div class="job-sub">農業科技新創、農委會計畫</div>
-    </div>
-    <div class="job-pill">
-      <span class="job-emoji">💊</span>
-      <div class="job-title">保健食品開發師</div>
-      <div class="job-sub">生技、製藥、保健品產業</div>
-    </div>
-    <div class="job-pill">
-      <span class="job-emoji">📊</span>
-      <div class="job-title">食品數據分析師</div>
-      <div class="job-sub">電商、餐飲連鎖、供應鏈管理</div>
-    </div>
-    <div class="job-pill">
-      <span class="job-emoji">🚀</span>
-      <div class="job-title">食品科技創業家</div>
-      <div class="job-sub">就像原地起啡 — 從課堂到金獎到市場</div>
-    </div>
-    <div class="job-pill">
-      <span class="job-emoji">🏫</span>
-      <div class="job-title">食品科學研究員</div>
-      <div class="job-sub">學術界、國家研究院、跨國合作計畫</div>
-    </div>
-    <div class="job-pill">
-      <span class="job-emoji">🌏</span>
-      <div class="job-title">國際食品法規專家</div>
-      <div class="job-sub">TFDA、Codex、跨國企業法規部門</div>
-    </div>
+    <div class="job-pill"><span class="job-emoji">🔬</span><div class="job-title">食品 AI 研發工程師</div><div class="job-sub">統一、味全、義美等大廠的研發部門</div></div>
+    <div class="job-pill"><span class="job-emoji">🛡️</span><div class="job-title">智慧食安稽查員</div><div class="job-sub">衛福部、食藥署、縣市衛生局</div></div>
+    <div class="job-pill"><span class="job-emoji">🌿</span><div class="job-title">精準農業顧問</div><div class="job-sub">農業科技新創、農委會計畫</div></div>
+    <div class="job-pill"><span class="job-emoji">💊</span><div class="job-title">保健食品開發師</div><div class="job-sub">生技、製藥、保健品產業</div></div>
+    <div class="job-pill"><span class="job-emoji">📊</span><div class="job-title">食品數據分析師</div><div class="job-sub">電商、餐飲連鎖、供應鏈管理</div></div>
+    <div class="job-pill"><span class="job-emoji">🚀</span><div class="job-title">食品科技創業家</div><div class="job-sub">就像原地起啡 — 從課堂到金獎到市場</div></div>
+    <div class="job-pill"><span class="job-emoji">🏫</span><div class="job-title">食品科學研究員</div><div class="job-sub">學術界、國家研究院、跨國合作計畫</div></div>
+    <div class="job-pill"><span class="job-emoji">🌏</span><div class="job-title">國際食品法規專家</div><div class="job-sub">TFDA、Codex、跨國企業法規部門</div></div>
   </div>
 </section>
 
-<!-- ── QUOTE ── -->
 <section class="section" style="padding-top:0;">
   <div class="quote-block reveal">
-    <p class="quote-text">
-      未來的食品科學家，<em>必須同時懂 AI</em>。<br>
-      未來的 AI 工程師，<em>最好懂食品</em>。<br>
-      在這兩個領域的交叉點上，正等著你來定義答案。
-    </p>
+    <p class="quote-text">未來的食品科學家，<em>必須同時懂 AI</em>。<br>未來的 AI 工程師，<em>最好懂食品</em>。<br>在這兩個領域的交叉點上，正等著你來定義答案。</p>
     <div class="quote-src">── 東海大學食品科學系 ✦ DEPT. OF FOOD SCIENCE, TUNGHAI UNIVERSITY</div>
   </div>
 </section>
 
-<!-- ── TIMELINE ── -->
 <section class="section">
   <span class="section-tag reveal">// Your Journey</span>
   <h2 class="section-title reveal">四年，你會<br>經歷什麼</h2>
-
   <div class="timeline">
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-year">大一 YEAR 01</div>
-      <div class="tl-title">建立食品科學基礎 × 認識數位工具</div>
-      <div class="tl-desc">生物學、有機化學、微生物學、統計學。同時開始接觸 AI 輔助分析工具，從資料收集到初步建模，讓你在理論課之外就開始感受數位科學的力量。</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-year">大二 YEAR 02</div>
-      <div class="tl-title">食品加工 × 感測技術初探</div>
-      <div class="tl-desc">食品加工、食品微生物、食品化學實驗。搭配儀器分析課程，學習 GC、光譜儀、流變儀等設備，開始理解食品感測的原理，為 AI 資料輸入做好準備。</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-year">大三 YEAR 03</div>
-      <div class="tl-title">智慧科技應用 × 國際移地教學</div>
-      <div class="tl-desc">核心選修「智慧科技與精準營養」、「食品創新實務」。同時有機會參加赴日移地教學，深入 Kewpie、Suntory 等企業，親眼看見 AI 產線如何運作。</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-year">大四 YEAR 04</div>
-      <div class="tl-title">專題研究 × 競賽 × 進入職場</div>
-      <div class="tl-desc">加入老師實驗室做專題研究，或參加全國性競賽（如精準健康產業創新創業競賽），也可透過企業橋接實習直接與職場接軌，以金獎成果進入夢想公司。</div>
-    </div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">大一 YEAR 01</div><div class="tl-title">建立食品科學基礎 × 認識數位工具</div><div class="tl-desc">生物學、有機化學、微生物學、統計學。同時開始接觸 AI 輔助分析工具，從資料收集到初步建模，讓你在理論課之外就開始感受數位科學的力量。</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">大二 YEAR 02</div><div class="tl-title">食品加工 × 感測技術初探</div><div class="tl-desc">食品加工、食品微生物、食品化學實驗。搭配儀器分析課程，學習 GC、光譜儀、流變儀等設備，開始理解食品感測的原理，為 AI 資料輸入做好準備。</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">大三 YEAR 03</div><div class="tl-title">智慧科技應用 × 國際移地教學</div><div class="tl-desc">核心選修「智慧科技與精準營養」、「食品創新實務」。同時有機會參加赴日移地教學，深入 Kewpie、Suntory 等企業，親眼看見 AI 產線如何運作。</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">大四 YEAR 04</div><div class="tl-title">專題研究 × 競賽 × 進入職場</div><div class="tl-desc">加入老師實驗室做專題研究，或參加全國性競賽（如精準健康產業創新創業競賽），也可透過企業橋接實習直接與職場接軌，以金獎成果進入夢想公司。</div></div>
   </div>
 </section>
 
-<!-- ── CTA ── -->
 <section class="cta-section">
-  <h2 class="cta-title reveal">
-    準備好加入<br>
-    <span class="accent">食品科學 × AI</span><br>
-    的世界了嗎？
-  </h2>
+  <h2 class="cta-title reveal">準備好加入<br><span class="accent">食品科學 × AI</span><br>的世界了嗎？</h2>
   <p class="cta-sub reveal">東海大學食品科學系，等你來定義未來食品的樣貌。</p>
   <div class="cta-buttons reveal">
-    <a href="https://foodsci.thu.edu.tw/web/news/list.php?lang=zh_tw&cid=5" class="btn-primary">查看最新榮譽榜</a>
-    <a href="https://foodsci.thu.edu.tw/web/teacher/list.php" class="btn-secondary">認識師資陣容</a>
-    <a href="https://foodsci.thu.edu.tw" class="btn-secondary">回系網首頁</a>
+    <a href="https://foodsci.thu.edu.tw/web/news/list.php?lang=zh_tw&cid=5&desktop=true" class="btn-primary">查看最新榮譽榜</a>
+    <a href="https://foodsci.thu.edu.tw/web/teacher/list.php?desktop=true" class="btn-secondary">認識師資陣容</a>
+    <a href="https://foodsci.thu.edu.tw/?desktop=true" class="btn-secondary">回系網首頁</a>
   </div>
 </section>
-
 </main>
 
 <script>
-// ── CUSTOM CURSOR ──
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
+const cursor = document.getElementById('cursor'); const ring = document.getElementById('cursor-ring');
 let mx = 0, my = 0, rx = 0, ry = 0;
 document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-function animCursor() {
-  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-  rx += (mx - rx) * .12; ry += (my - ry) * .12;
-  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-  requestAnimationFrame(animCursor);
-}
+function animCursor() { cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; rx += (mx - rx) * .12; ry += (my - ry) * .12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animCursor); }
 animCursor();
 document.querySelectorAll('a, button, .domain-card, .job-pill').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    cursor.style.width = '20px'; cursor.style.height = '20px';
-    ring.style.width = '56px'; ring.style.height = '56px';
-  });
-  el.addEventListener('mouseleave', () => {
-    cursor.style.width = '12px'; cursor.style.height = '12px';
-    ring.style.width = '36px'; ring.style.height = '36px';
-  });
+  el.addEventListener('mouseenter', () => { cursor.style.width = '20px'; cursor.style.height = '20px'; ring.style.width = '56px'; ring.style.height = '56px'; });
+  el.addEventListener('mouseleave', () => { cursor.style.width = '12px'; cursor.style.height = '12px'; ring.style.width = '36px'; ring.style.height = '36px'; });
 });
 
-// ── NEURAL NETWORK CANVAS ──
-const canvas = document.getElementById('neural-canvas');
-const ctx = canvas.getContext('2d');
-let W, H, nodes = [], animId;
-const NODE_COUNT = 80;
-const MAX_DIST = 160;
-
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', () => { resize(); initNodes(); });
-
-function initNodes() {
-  nodes = Array.from({length: NODE_COUNT}, () => ({
-    x: Math.random() * W, y: Math.random() * H,
-    vx: (Math.random()-.5) * .4, vy: (Math.random()-.5) * .4,
-    r: Math.random() * 2 + 1,
-    pulse: Math.random() * Math.PI * 2
-  }));
-}
+const canvas = document.getElementById('neural-canvas'); const ctx = canvas.getContext('2d');
+let W, H, nodes = [], animId; const NODE_COUNT = 80; const MAX_DIST = 160;
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', () => { resize(); initNodes(); });
+function initNodes() { nodes = Array.from({length: NODE_COUNT}, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random()-.5) * .4, vy: (Math.random()-.5) * .4, r: Math.random() * 2 + 1, pulse: Math.random() * Math.PI * 2 })); }
 initNodes();
-
 function drawNetwork() {
   ctx.clearRect(0, 0, W, H);
-  nodes.forEach(n => {
-    n.x += n.vx; n.y += n.vy;
-    n.pulse += .02;
-    if (n.x < 0 || n.x > W) n.vx *= -1;
-    if (n.y < 0 || n.y > H) n.vy *= -1;
-  });
-  // Mouse interaction
-  nodes.forEach(n => {
-    const dx = mx - n.x, dy = my - n.y;
-    const d = Math.sqrt(dx*dx+dy*dy);
-    if (d < 120) { n.x -= dx*.008; n.y -= dy*.008; }
-  });
-  // Draw connections
+  nodes.forEach(n => { n.x += n.vx; n.y += n.vy; n.pulse += .02; if (n.x < 0 || n.x > W) n.vx *= -1; if (n.y < 0 || n.y > H) n.vy *= -1; });
+  nodes.forEach(n => { const dx = mx - n.x, dy = my - n.y; const d = Math.sqrt(dx*dx+dy*dy); if (d < 120) { n.x -= dx*.008; n.y -= dy*.008; } });
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i+1; j < nodes.length; j++) {
-      const dx = nodes[i].x - nodes[j].x;
-      const dy = nodes[i].y - nodes[j].y;
-      const d = Math.sqrt(dx*dx+dy*dy);
-      if (d < MAX_DIST) {
-        const alpha = (1 - d/MAX_DIST) * .35;
-        ctx.strokeStyle = `rgba(0,229,200,${alpha})`;
-        ctx.lineWidth = .6;
-        ctx.beginPath();
-        ctx.moveTo(nodes[i].x, nodes[i].y);
-        ctx.lineTo(nodes[j].x, nodes[j].y);
-        ctx.stroke();
-      }
+      const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d = Math.sqrt(dx*dx+dy*dy);
+      if (d < MAX_DIST) { const alpha = (1 - d/MAX_DIST) * .35; ctx.strokeStyle = `rgba(0,229,200,${alpha})`; ctx.lineWidth = .6; ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke(); }
     }
   }
-  // Draw nodes
-  nodes.forEach(n => {
-    const glow = (Math.sin(n.pulse) + 1) / 2;
-    ctx.shadowBlur = 8 + glow * 8;
-    ctx.shadowColor = 'rgba(0,229,200,.8)';
-    ctx.fillStyle = `rgba(0,229,200,${0.4 + glow * 0.5})`;
-    ctx.beginPath();
-    ctx.arc(n.x, n.y, n.r + glow * .8, 0, Math.PI*2);
-    ctx.fill();
-  });
-  ctx.shadowBlur = 0;
-  animId = requestAnimationFrame(drawNetwork);
+  nodes.forEach(n => { const glow = (Math.sin(n.pulse) + 1) / 2; ctx.shadowBlur = 8 + glow * 8; ctx.shadowColor = 'rgba(0,229,200,.8)'; ctx.fillStyle = `rgba(0,229,200,${0.4 + glow * 0.5})`; ctx.beginPath(); ctx.arc(n.x, n.y, n.r + glow * .8, 0, Math.PI*2); ctx.fill(); });
+  ctx.shadowBlur = 0; animId = requestAnimationFrame(drawNetwork);
 }
 drawNetwork();
 
-// ── SCROLL REVEAL ──
 const reveals = document.querySelectorAll('.reveal, .tl-item');
-const io = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('visible'), i * 80);
-      io.unobserve(e.target);
-    }
-  });
-}, { threshold: .15 });
+const io = new IntersectionObserver(entries => { entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); io.unobserve(e.target); } }); }, { threshold: .15 });
 reveals.forEach(el => io.observe(el));
 
-// ── COUNTER ANIMATION ──
 function animCounter(el) {
-  const target = parseInt(el.dataset.target) || 0;
-  const prefix = el.dataset.prefix || '';
-  const suffix = el.dataset.suffix || '';
+  const target = parseInt(el.dataset.target) || 0; const prefix = el.dataset.prefix || ''; const suffix = el.dataset.suffix || '';
   if (el.dataset.target === undefined) return;
-  let current = 0;
-  const step = target / 60;
-  const timer = setInterval(() => {
-    current = Math.min(current + step, target);
-    el.textContent = prefix + Math.floor(current) + suffix;
-    if (current >= target) clearInterval(timer);
-  }, 20);
+  let current = 0; const step = target / 60;
+  const timer = setInterval(() => { current = Math.min(current + step, target); el.textContent = prefix + Math.floor(current) + suffix; if (current >= target) clearInterval(timer); }, 20);
 }
-const counterIO = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      animCounter(e.target);
-      counterIO.unobserve(e.target);
-    }
-  });
-}, { threshold: .5 });
+const counterIO = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { animCounter(e.target); counterIO.unobserve(e.target); } }); }, { threshold: .5 });
 document.querySelectorAll('[data-target]').forEach(el => counterIO.observe(el));
 </script>
-
 </body>
 </html>
